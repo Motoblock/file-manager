@@ -1,7 +1,9 @@
 
 import readline from 'node:readline';
-
+import { homedir } from 'node:os';
+import { chdir  } from 'node:process';
 import { welcom, goodbye, currently } from './util.js';
+import {list } from './view.js';
 
 const init = async () => {
   welcom();
@@ -14,16 +16,23 @@ const init = async () => {
   rl.prompt();
 
 	rl.on('line', (input) => {
-		// console.log(input);
     switch(input) {
-      case '.exit':  rl.emit("SIGINT"); break;
+      case '.exit':
+        rl.emit("SIGINT");
+        break;
+      case 'up':
+        chdir('../');
+        currently();
+        break;
+      case 'ls':
+        list();
+        break;
       default: console.log('Invalid input');
     }
 
 	});
-  rl.on("SIGINT", function () {
+  rl.on("SIGINT", () => {
     goodbye();
-    process.exit();
   });
 }
 

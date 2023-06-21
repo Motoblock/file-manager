@@ -1,13 +1,15 @@
 
 import readline from 'node:readline';
-import { homedir } from 'node:os';
+// import { homedir } from 'node:os';
 import { chdir  } from 'node:process';
-import { welcom, goodbye, currently } from './util.js';
-import {list } from './view.js';
+import { welcom, goodbye, currentlyPath } from './util.js';
+import { list } from './view.js';
+import { nwd } from './nwd.js';
+import { read } from './files.js';
 
 const init = async () => {
   welcom();
-  currently();
+  currentlyPath();
 	const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -16,7 +18,10 @@ const init = async () => {
   rl.prompt();
 
 	rl.on('line', (input) => {
-    switch(input) {
+    let [command, ...argv] = input.split(' ');
+    console.log(argv);
+
+    switch(command) {
       case '.exit':
         rl.emit("SIGINT");
         break;
@@ -24,8 +29,14 @@ const init = async () => {
         chdir('../');
         currently();
         break;
+      case 'cd':
+        nwd(argv);
+        break;
       case 'ls':
         list();
+        break;
+      case 'cat':
+        read(argv);
         break;
       default: console.log('Invalid input');
     }

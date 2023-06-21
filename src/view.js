@@ -11,7 +11,8 @@ export const list = async () => {
 		})
 
 		const sortable = resTree.sort((a, b) =>
-			((b.Type < a.Type) - (a.Type < b.Type) || (b.Name < a.Name) - (a.Name < b.Name))
+			((b.Type.toLowerCase() < a.Type.toLowerCase()) - (a.Type.toLowerCase() < b.Type.toLowerCase()) ||
+			(b.Name.toLowerCase() < a.Name.toLowerCase()) - (a.Name.toLowerCase() < b.Name.toLowerCase()))
 		);
 
 		console.table(sortable);

@@ -1,4 +1,3 @@
-// import { count } from 'console';
 import { cwd } from 'process';
 import { homedir } from 'node:os';
 import { dirname } from 'node:path';
@@ -27,10 +26,10 @@ export function currentlyPath() {
 }
 
 export const getAbsolutePath = (path) => {
-  const rootDir = dirname(homedir());
-	console.log(rootDir);
+//   const rootDir = dirname(path);
+// 	console.log('rootDir', rootDir);
 
-  if (path === rootDir) return homedir();
+//   if (path === rootDir) return homedir();
 
   const isAbsolutePath = isAbsolute(path);
   const currentDir = cwd();

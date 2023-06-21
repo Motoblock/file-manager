@@ -27,7 +27,7 @@ const init = async () => {
         break;
       case 'up':
         chdir('../');
-        currently();
+        currentlyPath();
         break;
       case 'cd':
         nwd(argv);

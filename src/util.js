@@ -2,6 +2,7 @@ import { cwd } from 'process';
 // import { homedir } from 'node:os';
 // import { dirname } from 'node:path';
 import { isAbsolute, resolve } from 'node:path';
+import { access, stat } from 'node:fs/promises';
 
 const argv = process.argv;
 let variable;
@@ -28,8 +29,27 @@ export function currentlyPath() {
 export const getAbsolutePath = (path) => {
   const isAbsolutePath = isAbsolute(path);
   const currentDir = cwd();
-	console.log('getAbsolutePath', path);
   return isAbsolutePath ? path : resolve(currentDir, path);
 };
 
 export const validNameFile = (nameFile) => !/[/|\||\\|\s]/.test(nameFile);
+
+export const isExistFile = async (path) => {
+	try {
+	  await access(path);
+	  return true;
+	} catch (error) {
+	  return false;
+	}
+  };
+
+  export const isExistDir = async (path) => {
+    try {
+		const p = await stat(path);
+		// console.log('isDirectory', p.isDirectory())
+      return p.isDirectory();
+    } catch {
+		console.log(123);
+      return false;
+    }
+  };

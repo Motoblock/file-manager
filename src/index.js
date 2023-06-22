@@ -1,11 +1,11 @@
 
 import readline from 'node:readline';
-// import { homedir } from 'node:os';
 import { chdir  } from 'node:process';
+
 import { welcom, goodbye, currentlyPath } from './util.js';
 import { list } from './view.js';
 import { nwd } from './nwd.js';
-import { read, create, rename } from './files.js';
+import { read, create, rename, copy } from './files.js';
 
 const init = async () => {
   welcom();
@@ -43,6 +43,9 @@ const init = async () => {
         break;
       case 'rn':
         rename(argv);
+        break;
+      case 'cp':
+        copy(argv);
         break;
       default: console.log('Invalid input');
     }

@@ -5,7 +5,7 @@ import { chdir  } from 'node:process';
 import { welcom, goodbye, currentlyPath } from './util.js';
 import { list } from './view.js';
 import { nwd } from './nwd.js';
-import { read } from './files.js';
+import { read, create, rename } from './files.js';
 
 const init = async () => {
   welcom();
@@ -37,6 +37,12 @@ const init = async () => {
         break;
       case 'cat':
         read(argv);
+        break;
+      case 'add':
+        create(argv);
+        break;
+      case 'rn':
+        rename(argv);
         break;
       default: console.log('Invalid input');
     }

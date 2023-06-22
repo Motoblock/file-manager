@@ -1,6 +1,6 @@
 import { cwd } from 'process';
-import { homedir } from 'node:os';
-import { dirname } from 'node:path';
+// import { homedir } from 'node:os';
+// import { dirname } from 'node:path';
 import { isAbsolute, resolve } from 'node:path';
 
 const argv = process.argv;
@@ -26,13 +26,10 @@ export function currentlyPath() {
 }
 
 export const getAbsolutePath = (path) => {
-//   const rootDir = dirname(path);
-// 	console.log('rootDir', rootDir);
-
-//   if (path === rootDir) return homedir();
-
   const isAbsolutePath = isAbsolute(path);
   const currentDir = cwd();
-	console.log('path', path);
+	console.log('getAbsolutePath', path);
   return isAbsolutePath ? path : resolve(currentDir, path);
 };
+
+export const validNameFile = (nameFile) => !/[/|\||\\|\s]/.test(nameFile);

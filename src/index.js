@@ -5,7 +5,7 @@ import { chdir  } from 'node:process';
 import { welcom, goodbye, currentlyPath } from './util.js';
 import { list } from './view.js';
 import { nwd } from './nwd.js';
-import { read, create, rename, copy } from './files.js';
+import { read, create, rename, copy, del } from './files.js';
 
 const init = async () => {
   welcom();
@@ -17,7 +17,7 @@ const init = async () => {
   });
   rl.prompt();
 
-	rl.on('line', (input) => {
+	rl.on('line', async (input) => {
     let [command, ...argv] = input.split(' ');
     console.log(argv);
 
@@ -47,9 +47,15 @@ const init = async () => {
       case 'cp':
         copy(argv);
         break;
+      case 'mv':
+        copy(argv);
+        del(argv[0]);
+        break;
+      case 'rm':
+        await del(argv[0]);
+        break;
       default: console.log('Invalid input');
     }
-
 	});
   rl.on("SIGINT", () => {
     goodbye();

@@ -46,7 +46,6 @@ export const isExistFile = async (path) => {
   export const isExistDir = async (path) => {
     try {
 		const p = await stat(path);
-		// console.log('isDirectory', p.isDirectory())
       return p.isDirectory();
     } catch {
 		console.log(123);

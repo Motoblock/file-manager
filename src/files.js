@@ -64,18 +64,27 @@ export const copy = async (arrayFileName) => {
 
 		if (isValid && isCopyToValid) {
 			try {
-					const filenameCopyFile = basename(pathToFile);
-					const newCopyPath = resolve(pathToNewDirectory, filenameCopyFile);
-					const readStream = createReadStream(pathToFile);
-					const writeStream = createWriteStream(newCopyPath);
+				const filenameCopyFile = basename(pathToFile);
+				const newCopyPath = resolve(pathToNewDirectory, filenameCopyFile);
+				const readStream = createReadStream(pathToFile);
+				const writeStream = createWriteStream(newCopyPath);
 
-					readStream.pipe(writeStream);
+				readStream.pipe(writeStream);
 
-					console.log('Сopying files was successful!');
+				console.log('Сopying files was successful!');
 			} catch(error) {
-				console.error("Operation failed");
+				console.log("Operation failed");
 			}
-		} else console.error("Invalid input");
-	} else console.error("Invalid input");
+		} else console.log("Invalid input");
+	} else console.log("Invalid input");
+	currentlyPath();
+};
+
+export const del = async (fileName) => {
+	try {
+		await fs.unlink(getAbsolutePath(fileName));
+	}	catch(err) {
+	  console.log("Operation failed");
+	};
 	currentlyPath();
 };

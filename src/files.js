@@ -1,6 +1,6 @@
 import * as fs from 'node:fs/promises';
 import { createReadStream, createWriteStream } from 'node:fs';
-import { cwd } from 'process';
+import { cwd, stdout } from 'process';
 import { resolve, basename } from 'node:path';
 import { getAbsolutePath, currentlyPath, validNameFile, isExistFile,isExistDir } from './util.js';
 
@@ -10,7 +10,11 @@ export const read = async (filename) => {
 		path = getAbsolutePath(filename[0]);
 		if (filename.length === 0) { console.log('Invalid input'); return; }
 		try {
-			const data = await fs.readFile(path, {encoding: 'utf-8'});
+			const data = createReadStream(path, 'utf-8');
+			data.pipe(stdout);
+			readStream.on('end', () => {
+				stdout.write('\n');
+			});
 			console.log(data);
 		} catch(err) {
 			console.error("Operation failed");

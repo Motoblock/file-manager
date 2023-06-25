@@ -6,6 +6,7 @@ import { welcom, goodbye, currentlyPath } from './util.js';
 import { list } from './view.js';
 import { nwd } from './nwd.js';
 import { read, create, rename, copy, del } from './files.js';
+import { os } from './os.js';
 
 const init = async () => {
   welcom();
@@ -18,8 +19,8 @@ const init = async () => {
   rl.prompt();
 
 	rl.on('line', async (input) => {
-    let [command, ...argv] = input.split(' ');
-    console.log(argv);
+    let [command, ...arg] = input.split(' ');
+    console.log(arg);
 
     switch(command) {
       case '.exit':
@@ -30,29 +31,32 @@ const init = async () => {
         currentlyPath();
         break;
       case 'cd':
-        nwd(argv);
+        nwd(arg);
         break;
       case 'ls':
         list();
         break;
       case 'cat':
-        read(argv);
+        read(arg);
         break;
       case 'add':
-        create(argv);
+        create(arg);
         break;
       case 'rn':
-        rename(argv);
+        rename(arg);
         break;
       case 'cp':
-        copy(argv);
+        copy(arg);
         break;
       case 'mv':
-        copy(argv);
-        del(argv[0]);
+        copy(arg);
+        del(arg[0]);
         break;
       case 'rm':
-        await del(argv[0]);
+        await del(arg[0]);
+        break;
+      case 'os':
+        console.log(os(arg[0]));
         break;
       default: console.log('Invalid input');
     }

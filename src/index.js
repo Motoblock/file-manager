@@ -7,6 +7,8 @@ import { list } from './view.js';
 import { nwd } from './nwd.js';
 import { read, create, rename, copy, del } from './files.js';
 import { os } from './os.js';
+import { hashFile } from './hash.js';
+import { compressFile, decompressFile } from './zip.js';
 
 const init = async () => {
   welcom();
@@ -20,7 +22,6 @@ const init = async () => {
 
 	rl.on('line', async (input) => {
     let [command, ...arg] = input.split(' ');
-    console.log(arg);
 
     switch(command) {
       case '.exit':
@@ -57,6 +58,17 @@ const init = async () => {
         break;
       case 'os':
         console.log(os(arg[0]));
+        break;
+      case 'hash':
+        if (arg.length === 2)
+          await hashFile(arg[0], arg[1]);
+        else console.log('Invalid input');
+        break;
+      case 'compress':
+        await compressFile(arg[0], arg[1]);
+        break;
+      case 'decompress':
+        await decompressFile(arg[0], arg[1]);
         break;
       default: console.log('Invalid input');
     }

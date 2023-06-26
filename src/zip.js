@@ -1,8 +1,9 @@
 
-import { createGzip, createGunzip } from 'node:zlib';
+import { createBrotliCompress, createBrotliDecompress } from 'zlib';
 import { pipeline } from 'node:stream/promises';
 import { createReadStream, createWriteStream } from 'node:fs';
 import { getAbsolutePath, isExistFile, currentlyPath } from './util.js';
+import { resolve, basename } from 'node:path';
 
 export const compressFile = async (source, destination) => {
   const pathSource = getAbsolutePath(source);
@@ -11,13 +12,14 @@ export const compressFile = async (source, destination) => {
   const isValidSource = await isExistFile(pathSource);
   if (isValidSource)
     try {
-      const gzip = createGzip();
-      const sourceI = createReadStream(pathSource);
-      const destinationI = createWriteStream(pathDestination);
+      const filenameSourceFile = basename(pathSource);
+			const newPath = resolve(pathDestination, `${filenameSourceFile}.br`);
+      const sourceI = createReadStream(filenameSourceFile);
+      const destinationI = createWriteStream(newPath);
 
-      await pipeline(sourceI, gzip, destinationI);
+      await pipeline(sourceI, createBrotliCompress(), destinationI);
     } catch {
-      console.error("Operation failed");
+      console.error("Operation failed123");
     }
   currentlyPath();
 };
@@ -29,11 +31,13 @@ export const decompressFile = async (source, destination) => {
   const isValidSource = await isExistFile(pathSource);
   if (isValidSource)
     try {
-      const gzip = createGunzip();
-      const sourceI = createReadStream(pathSource);
-      const destinationI = createWriteStream(pathDestination);
+      const filenameSourceFile = basename(pathSource);
+			const newPath = resolve(pathDestination, filenameSourceFile.replace('.br', ''));
 
-      await pipeline(sourceI, gzip, destinationI);
+      const sourceI = createReadStream(filenameSourceFile);
+      const destinationI = createWriteStream(newPath);
+
+      await pipeline(sourceI, createBrotliDecompress(), destinationI);
     } catch {
       console.error("Operation failed");
     }

@@ -19,5 +19,4 @@ export const os = (arg) => {
     default:
       return 'Invalid input';
   }
-  currentlyPath();
 };

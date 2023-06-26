@@ -1,6 +1,4 @@
 import { cwd } from 'process';
-// import { homedir } from 'node:os';
-// import { dirname } from 'node:path';
 import { isAbsolute, resolve } from 'node:path';
 import { access, stat } from 'node:fs/promises';
 
@@ -48,7 +46,6 @@ export const isExistFile = async (path) => {
 		const p = await stat(path);
       return p.isDirectory();
     } catch {
-		console.log(123);
       return false;
     }
   };

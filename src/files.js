@@ -2,21 +2,25 @@ import * as fs from 'node:fs/promises';
 import { createReadStream, createWriteStream } from 'node:fs';
 import { cwd, stdout } from 'process';
 import { resolve, basename } from 'node:path';
-import { getAbsolutePath, currentlyPath, validNameFile, isExistFile,isExistDir } from './util.js';
+import { getAbsolutePath, currentlyPath, validNameFile, isExistFile, isExistDir } from './util.js';
 import { pipeline } from 'node:stream/promises';
 
 export const read = async (filename) => {
 	let path = '';
+
 	if (filename) {
 		path = getAbsolutePath(filename[0]);
-		if (filename.length === 0) { console.log('Invalid input'); return; }
+		const isFile = await isExistFile(path);
+
+		if (filename.length === 0 || !isFile) { console.log('Invalid input'); return; }
 		try {
 			const data = createReadStream(path, 'utf-8');
-			data.pipe(stdout);
+			data.on('data', function (chunk) {
+				console.log(chunk.toString());
+		});
 			readStream.on('end', () => {
 				stdout.write('\n');
 			});
-			console.log(data);
 		} catch(err) {
 			console.error("Operation failed");
 		}

@@ -1,4 +1,6 @@
 import { EOL, cpus, homedir, arch, userInfo } from 'node:os';
+import { currentlyPath } from './util.js';
+
 export const os = (arg) => {
   switch (arg) {
     case "--EOL":
@@ -17,4 +19,5 @@ export const os = (arg) => {
     default:
       return 'Invalid input';
   }
+  currentlyPath();
 };

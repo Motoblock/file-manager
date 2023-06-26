@@ -2,7 +2,7 @@
 import { createGzip, createGunzip } from 'node:zlib';
 import { pipeline } from 'node:stream/promises';
 import { createReadStream, createWriteStream } from 'node:fs';
-import { getAbsolutePath, isExistFile } from './util.js';
+import { getAbsolutePath, isExistFile, currentlyPath } from './util.js';
 
 export const compressFile = async (source, destination) => {
   const pathSource = getAbsolutePath(source);
@@ -19,6 +19,7 @@ export const compressFile = async (source, destination) => {
     } catch {
       console.error("Operation failed");
     }
+  currentlyPath();
 };
 
 export const decompressFile = async (source, destination) => {
@@ -36,4 +37,5 @@ export const decompressFile = async (source, destination) => {
     } catch {
       console.error("Operation failed");
     }
+  currentlyPath();
 };

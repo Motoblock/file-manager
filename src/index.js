@@ -50,8 +50,8 @@ const init = async () => {
         copy(arg);
         break;
       case 'mv':
-        copy(arg);
-        del(arg[0]);
+        await copy(arg);
+        await del(arg[0]);
         break;
       case 'rm':
         await del(arg[0]);
@@ -60,15 +60,17 @@ const init = async () => {
         console.log(os(arg[0]));
         break;
       case 'hash':
-        if (arg.length === 2)
           await hashFile(arg[0], arg[1]);
-        else console.log('Invalid input');
         break;
       case 'compress':
-        await compressFile(arg[0], arg[1]);
+        if (arg.length === 2)
+          await compressFile(arg[0], arg[1]);
+        else console.log('Invalid input');
         break;
       case 'decompress':
-        await decompressFile(arg[0], arg[1]);
+        if (arg.length === 2)
+          await decompressFile(arg[0], arg[1]);
+        else console.log('Invalid input');
         break;
       default: console.log('Invalid input');
     }

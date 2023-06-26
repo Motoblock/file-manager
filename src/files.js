@@ -3,6 +3,7 @@ import { createReadStream, createWriteStream } from 'node:fs';
 import { cwd, stdout } from 'process';
 import { resolve, basename } from 'node:path';
 import { getAbsolutePath, currentlyPath, validNameFile, isExistFile,isExistDir } from './util.js';
+import { pipeline } from 'node:stream/promises';
 
 export const read = async (filename) => {
 	let path = '';
@@ -69,7 +70,7 @@ export const copy = async (arrayFileName) => {
 				const readStream = createReadStream(pathToFile);
 				const writeStream = createWriteStream(newCopyPath);
 
-				readStream.pipe(writeStream);
+				await pipeline(readStream, writeStream);
 
 				console.log('Сopying files was successful!');
 			} catch(error) {

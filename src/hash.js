@@ -1,6 +1,6 @@
 import * as fs from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { getAbsolutePath, isExistFile } from './util.js';
+import { getAbsolutePath, isExistFile, currentlyPath } from './util.js';
 
 export const hashFile = async (arrayFileName) => {
   const path = getAbsolutePath(arrayFileName);
@@ -14,4 +14,5 @@ export const hashFile = async (arrayFileName) => {
     } catch {
       console.error("Operation failed");
     }
+  currentlyPath();
 };

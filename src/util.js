@@ -20,10 +20,6 @@ export function goodbye() {
 	process.exit();
 };
 
-export function currentlyPath() {
-	console.log(`\nYou are currently in ${cwd()}`);
-}
-
 export const getAbsolutePath = (path) => {
   const isAbsolutePath = isAbsolute(path);
   const currentDir = cwd();
@@ -44,6 +40,7 @@ export const isExistFile = async (path) => {
   export const isExistDir = async (path) => {
     try {
 		const p = await stat(path);
+		console.log('p=',p);
       return p.isDirectory();
     } catch {
       return false;

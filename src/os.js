@@ -1,5 +1,4 @@
 import { EOL, cpus, homedir, arch, userInfo } from 'node:os';
-import { currentlyPath } from './util.js';
 
 export const os = (arg) => {
   switch (arg) {

@@ -1,9 +1,11 @@
 import * as fs from 'node:fs/promises';
-import { createReadStream, createWriteStream } from 'node:fs';
-import { cwd, stdout } from 'process';
-import { resolve, basename } from 'node:path';
-import { getAbsolutePath, currentlyPath, validNameFile, isExistFile, isExistDir } from './util.js';
 import { pipeline } from 'node:stream/promises';
+import { createReadStream, createWriteStream } from 'node:fs';
+import { cwd, stdout } from 'node:process';
+import { resolve, basename } from 'node:path';
+
+import { getAbsolutePath, validNameFile, isExistFile, isExistDir } from './util.js';
+
 
 export const read = async (filename) => {
 	let path = '';
@@ -15,17 +17,15 @@ export const read = async (filename) => {
 		if (filename.length === 0 || !isFile) { console.log('Invalid input'); return; }
 		try {
 			const data = createReadStream(path, 'utf-8');
-			data.on('data', function (chunk) {
-				console.log(chunk.toString());
-		});
-			readStream.on('end', () => {
+			data.pipe(stdout);
+			data.on('end', () => {
 				stdout.write('\n');
 			});
 		} catch(err) {
-			console.error("Operation failed");
+			console.error('Operation failed');
 		}
 	}
-	currentlyPath();
+	// currentlyPath();
 };
 
 export const create = async(filename) => {
@@ -45,7 +45,7 @@ export const create = async(filename) => {
 			}
 		}
 	}
-	currentlyPath();
+	// currentlyPath();
 };
 
 export const rename = async (arrayFileName) => {
@@ -56,7 +56,7 @@ export const rename = async (arrayFileName) => {
 			console.error("Operation failed");
 		}
 	} else console.error("Invalid input");
-	currentlyPath();
+	// currentlyPath();
 };
 
 export const copy = async (arrayFileName) => {
@@ -82,7 +82,7 @@ export const copy = async (arrayFileName) => {
 			}
 		} else console.log("Invalid input");
 	} else console.log("Invalid input");
-	currentlyPath();
+	// currentlyPath();
 };
 
 export const del = async (fileName) => {

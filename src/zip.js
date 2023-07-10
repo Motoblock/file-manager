@@ -2,7 +2,7 @@
 import { createBrotliCompress, createBrotliDecompress } from 'zlib';
 import { pipeline } from 'node:stream/promises';
 import { createReadStream, createWriteStream } from 'node:fs';
-import { getAbsolutePath, isExistFile, currentlyPath } from './util.js';
+import { getAbsolutePath, isExistFile } from './util.js';
 import { resolve, basename } from 'node:path';
 
 export const compressFile = async (source, destination) => {
@@ -21,7 +21,7 @@ export const compressFile = async (source, destination) => {
     } catch {
       console.error("Operation failed123");
     }
-  currentlyPath();
+  // currentlyPath();
 };
 
 export const decompressFile = async (source, destination) => {
@@ -41,5 +41,5 @@ export const decompressFile = async (source, destination) => {
     } catch {
       console.error("Operation failed");
     }
-  currentlyPath();
+  // currentlyPath();
 };

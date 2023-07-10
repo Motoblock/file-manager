@@ -1,40 +1,42 @@
 
 import readline from 'node:readline';
-import { chdir  } from 'node:process';
-import { homedir } from 'node:os';
+// import { chdir  } from 'node:process';
 
-import { welcom, goodbye, currentlyPath } from './util.js';
+import { welcom, goodbye } from './util.js';
 import { list } from './view.js';
 import { nwd } from './nwd.js';
 import { read, create, rename, copy, del } from './files.js';
 import { os } from './os.js';
 import { hashFile } from './hash.js';
 import { compressFile, decompressFile } from './zip.js';
-chdir(homedir());
+// chdir(homedir());
+
+welcom();
 
 const init = async () => {
-  welcom();
-  currentlyPath();
 	const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    prompt: 'Enter command, please \n> '
   });
+  rl.setPrompt('\nYou are currently in ' + process.cwd() + '\n> ');
   rl.prompt();
 
 	rl.on('line', async (input) => {
-    let [command, ...arg] = input.split(' ');
+    let [command, ...arg] = input.toString().trim().split(' ');
 
-    switch(command) {
+    switch(command.trim()) {
       case '.exit':
         rl.emit("SIGINT");
         break;
       case 'up':
-        chdir('../');
-        currentlyPath();
+        process.chdir('../');
+        rl.setPrompt('\nYou are currently in ' + process.cwd() + '\n> ');
+        rl.prompt();
         break;
       case 'cd':
         nwd(arg);
+        rl.setPrompt('\nYou are currently in ' + process.cwd() + '\n> ');
+        rl.prompt();
         break;
       case 'ls':
         list();
@@ -60,22 +62,26 @@ const init = async () => {
         break;
       case 'os':
         console.log(os(arg[0]));
-        currentlyPath();
+        // rl.prompt();
         break;
       case 'hash':
-          await hashFile(arg[0], arg[1]);
+        await hashFile(arg[0], arg[1]);
         break;
       case 'compress':
         if (arg.length === 2)
           await compressFile(arg[0], arg[1]);
-        else console.log('Invalid input');
+        else { console.log('Invalid input');  rl.prompt(); }
         break;
       case 'decompress':
         if (arg.length === 2)
           await decompressFile(arg[0], arg[1]);
-        else console.log('Invalid input');
+        else { console.log('Invalid input');  rl.prompt(); }
         break;
-      default: console.log('Invalid input');
+      default: {
+        console.log('Invalid input');
+        // currentlyPath();
+
+      }
     }
 	});
   rl.on("SIGINT", () => {

@@ -2,7 +2,7 @@
 import readline from 'node:readline';
 // import { chdir  } from 'node:process';
 
-import { welcom, goodbye } from './util.js';
+import { welcom, goodbye, currentDir } from './util.js';
 import { list } from './view.js';
 import { nwd } from './nwd.js';
 import { read, create, rename, copy, del } from './files.js';
@@ -29,29 +29,28 @@ const init = async () => {
         rl.emit("SIGINT");
         break;
       case 'up':
-        process.chdir('../');
-        rl.setPrompt('\nYou are currently in ' + process.cwd() + '\n> ');
-        rl.prompt();
+        process.chdir('..');
+        currentDir(rl);
         break;
       case 'cd':
         nwd(arg);
-        rl.setPrompt('\nYou are currently in ' + process.cwd() + '\n> ');
-        rl.prompt();
+        currentDir(rl);
         break;
       case 'ls':
         list();
         break;
       case 'cat':
-        await read(arg);
+        await read(arg, rl);
+        // currentDir(rl);
         break;
       case 'add':
-        await create(arg);
+        await create(arg, rl);
         break;
       case 'rn':
-        await rename(arg);
+        await rename(arg, rl);
         break;
       case 'cp':
-        await copy(arg);
+        await copy(arg, rl);
         break;
       case 'mv':
         await copy(arg);
@@ -62,7 +61,7 @@ const init = async () => {
         break;
       case 'os':
         console.log(os(arg[0]));
-        // rl.prompt();
+        currentDir(rl);
         break;
       case 'hash':
         await hashFile(arg[0], arg[1]);
@@ -70,17 +69,16 @@ const init = async () => {
       case 'compress':
         if (arg.length === 2)
           await compressFile(arg[0], arg[1]);
-        else { console.log('Invalid input');  rl.prompt(); }
+        else { console.log('Invalid input');   currentDir(rl); }
         break;
       case 'decompress':
         if (arg.length === 2)
           await decompressFile(arg[0], arg[1]);
-        else { console.log('Invalid input');  rl.prompt(); }
+        else { console.log('Invalid input');  currentDir(rl); }
         break;
       default: {
         console.log('Invalid input');
-        // currentlyPath();
-
+        currentDir(rl);
       }
     }
 	});

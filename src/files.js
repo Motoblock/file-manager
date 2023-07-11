@@ -8,33 +8,31 @@ import { resolve, basename } from 'node:path';
 import { getAbsolutePath, validNameFile, isExistFile, isExistDir, currentDir } from './util.js';
 
 
-export const read = async (filename, rl) => {
+export const read = async (filename) => {
 	let path = '';
+	let data = '';
 
-	if (filename) {
+	if (filename[0]) {
 		path = getAbsolutePath(filename[0]);
 		const isFile = await isExistFile(path);
 
-		if (filename.length === 0 || !isFile) {
+		if (!isFile) {
 			console.log('Invalid input');
 			currentDir();
 			return;
 		}
 		try {
-			const data = createReadStream(path, 'utf-8');
-			const myWritable = new Writable({
-				write(chunk) {
-					console.log(chunk.toString());
-				},
+			const dataStream = createReadStream(path, 'utf-8');
+			dataStream.on('data', chunk => data += chunk );
+			dataStream.on('end', () => {
+				console.log(data);
+				currentDir();
 			});
 
-			await pipeline(data, myWritable);
-			currentDir();
 		} catch(err) {
 			console.error('Operation failed');
 		}
-	}
-	// currentDir(rl);
+	} else stdout.write('Invalid input\n> ');
 };
 
 export const create = async (filename,) => {
@@ -63,7 +61,7 @@ export const create = async (filename,) => {
 export const rename = async (arrayFileName) => {
 	if (arrayFileName[0] && arrayFileName[1]) {
 		try {
-			await fs.rename(arrayFileName[0], arrayFileName[1] );
+			await fs.rename(arrayFileName[0], arrayFileName[1]);
 		} catch (error) {
 			console.error("Operation failed");
 		}

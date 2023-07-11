@@ -41,8 +41,6 @@ const init = async () => {
         break;
       case 'cat':
         await read(arg);
-        // console.log('1235555****5');
-        // currentDir(rl);
         break;
       case 'add':
         await create(arg);

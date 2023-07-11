@@ -30,27 +30,28 @@ const init = async () => {
         break;
       case 'up':
         process.chdir('..');
-        currentDir(rl);
+        currentDir();
         break;
       case 'cd':
         nwd(arg);
-        currentDir(rl);
+        // currentDir();
         break;
       case 'ls':
         list();
         break;
       case 'cat':
-        await read(arg, rl);
+        await read(arg);
+        // console.log('1235555****5');
         // currentDir(rl);
         break;
       case 'add':
-        await create(arg, rl);
+        await create(arg);
         break;
       case 'rn':
-        await rename(arg, rl);
+        await rename(arg);
         break;
       case 'cp':
-        await copy(arg, rl);
+        await copy(arg);
         break;
       case 'mv':
         await copy(arg);
@@ -61,7 +62,7 @@ const init = async () => {
         break;
       case 'os':
         console.log(os(arg[0]));
-        currentDir(rl);
+        currentDir();
         break;
       case 'hash':
         await hashFile(arg[0], arg[1]);
@@ -69,16 +70,16 @@ const init = async () => {
       case 'compress':
         if (arg.length === 2)
           await compressFile(arg[0], arg[1]);
-        else { console.log('Invalid input');   currentDir(rl); }
+        else { console.log('Invalid input');   currentDir(); }
         break;
       case 'decompress':
         if (arg.length === 2)
           await decompressFile(arg[0], arg[1]);
-        else { console.log('Invalid input');  currentDir(rl); }
+        else { console.log('Invalid input');  currentDir(); }
         break;
       default: {
         console.log('Invalid input');
-        currentDir(rl);
+        currentDir();
       }
     }
 	});

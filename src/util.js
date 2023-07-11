@@ -20,9 +20,8 @@ export function goodbye() {
 	process.exit();
 };
 
-export function currentDir(rl) {
-	rl.setPrompt('\nYou are currently in ' + process.cwd() + '\n> ');
-	rl.prompt();
+export function currentDir() {
+	process.stdout.write(`\nYou are currently in ${process.cwd()}\n> `);
 };
 
 export const getAbsolutePath = (path) => {

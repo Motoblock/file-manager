@@ -9,7 +9,7 @@ export const hashFile = async (arrayFileName) => {
   if (isValid)
     try {
       const data = await fs.readFile(path, 'utf-8');
-      const hash = createHash("sha256").update(data).digest('hex');
+      const hash = createHash('sha256').update(data).digest('hex');
       console.log(hash);
     } catch {
       console.error("Operation failed");

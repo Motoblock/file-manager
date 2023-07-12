@@ -1,6 +1,5 @@
 import * as fs from 'node:fs/promises';
-import { pipeline, finished } from 'node:stream/promises';
-import { Writable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 import { createReadStream, createWriteStream } from 'node:fs';
 import { cwd, stdout } from 'node:process';
 import { resolve, basename } from 'node:path';
@@ -35,7 +34,7 @@ export const read = async (filename) => {
 	} else stdout.write('Invalid input\n> ');
 };
 
-export const create = async (filename,) => {
+export const create = async (filename) => {
 	if (filename) {
 		if (filename.length === 0) {
 			console.error('Invalid input');
@@ -43,12 +42,12 @@ export const create = async (filename,) => {
 			return;
 		}
 		const isValidFilename = validNameFile(filename.join(' '));
-		const currentDir = cwd();
 
 		if (!isValidFilename) {
 			console.error('"/ | \\" and white spaces are not allowed in a filename. \nOperation failed');
 		} else {
 			try {
+				const currentDir = cwd();
 				await fs.appendFile(resolve(currentDir, filename[0]), "", { flag: "ax" });
 			} catch (error) {
 				console.error('Operation failed');
@@ -60,16 +59,24 @@ export const create = async (filename,) => {
 
 export const rename = async (arrayFileName) => {
 	if (arrayFileName[0] && arrayFileName[1]) {
-		try {
-			await fs.rename(arrayFileName[0], arrayFileName[1]);
-		} catch (error) {
+		const isfileBak = await isExistFile(arrayFileName[0]);
+		const isfileNew = await isExistFile(arrayFileName[1]);
+
+		if (!isfileBak || isfileNew)
 			console.error("Operation failed");
+		else {
+			try {
+				await fs.rename(arrayFileName[0], arrayFileName[1]);
+			} catch (error) {
+				console.error("Operation failed");
+			}
 		}
-	} else console.error("Invalid input");
+	} else console.error("Invalid input\n> ");
+
 	currentDir();
 };
 
-export const copy = async (arrayFileName,) => {
+export const copy = async (arrayFileName) => {
 	if (arrayFileName[0] && arrayFileName[1]) {
 		const pathToFile = getAbsolutePath(arrayFileName[0]);
     const pathToNewDirectory = getAbsolutePath(arrayFileName[1]);
@@ -79,20 +86,21 @@ export const copy = async (arrayFileName,) => {
 
 		if (isValid && isCopyToValid) {
 			try {
-				const filenameCopyFile = basename(pathToFile);
-				const newCopyPath = resolve(pathToNewDirectory, filenameCopyFile);
+				const nameCopyFile = basename(pathToFile);
+				const newCopyPath = resolve(pathToNewDirectory, nameCopyFile);
 				const readStream = createReadStream(pathToFile);
 				const writeStream = createWriteStream(newCopyPath);
 
 				await pipeline(readStream, writeStream);
 
 				console.log('Сopying files was successful!');
+				return true;
 			} catch(error) {
 				console.log("Operation failed");
 			}
-		} else console.log("Invalid input");
-	} else console.log("Invalid input");
-	currentDir();
+		} else console.log("Invalid input\n> ");
+	} else console.log("Invalid input\n> ");
+	return false;
 };
 
 export const del = async (fileName) => {
@@ -101,5 +109,5 @@ export const del = async (fileName) => {
 	}	catch(err) {
 	  console.log("Operation failed");
 	};
-	currentDir(rl);
+	currentDir();
 };

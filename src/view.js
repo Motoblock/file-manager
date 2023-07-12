@@ -2,10 +2,11 @@ import * as fs from 'node:fs/promises';
 import { cwd } from 'node:process';
 
 export const list = async () => {
-    const currentDir = cwd();
+  const currentDir = cwd();
 	try {
-		const files = await fs.readdir(currentDir, { withFileTypes: true });
 		const resTree = [];
+		const files = await fs.readdir(currentDir, { withFileTypes: true });
+
 		files.forEach((el) => {
 			resTree.push({Name: el.name, Type: el.isDirectory() ? 'directory': 'file'})
 		})
@@ -16,7 +17,7 @@ export const list = async () => {
 		);
 
 		console.table(sortable);
-	} catch(err) {
-		console.error(new Error("Operation failed"));
+	} catch (err) {
+		console.error('Operation failed');
 	}
 };

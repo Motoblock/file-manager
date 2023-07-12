@@ -1,12 +1,14 @@
-import { cwd } from 'process';
+import { cwd } from 'node:process';
 import { isAbsolute, resolve } from 'node:path';
 import { access, stat } from 'node:fs/promises';
 
-const argv = process.argv;
 let variable;
 
 export function welcom() {
+	const argv = process.argv;
+
 	variable = 'Incognito';
+
 	argv.forEach((val) => {
 	if (val.startsWith('--')) {
 			variable = val.replace('--username=', '');
@@ -39,14 +41,13 @@ export const isExistFile = async (path) => {
 	} catch (error) {
 	  return false;
 	}
-  };
+};
 
-  export const isExistDir = async (path) => {
-    try {
-		const p = await stat(path);
-		console.log('p=',p);
-      return p.isDirectory();
-    } catch {
-      return false;
-    }
-  };
+export const isExistDir = async (path) => {
+	try {
+	const infoDir = await stat(path);
+		return infoDir.isDirectory();
+	} catch {
+		return false;
+	}
+};

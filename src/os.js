@@ -16,6 +16,6 @@ export const os = (arg) => {
     case "--architecture":
       return arch();
     default:
-      return 'Invalid input';
+      return 'Invalid input\n> ';
   }
 };

@@ -14,6 +14,7 @@ import { compressFile, decompressFile } from './zip.js';
 welcom();
 
 const init = async () => {
+  let iscp = false;
 	const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -49,11 +50,12 @@ const init = async () => {
         await rename(arg);
         break;
       case 'cp':
-        await copy(arg);
+        iscp = await copy(arg);
+        if (iscp) currentDir();
         break;
       case 'mv':
-        await copy(arg);
-        await del(arg[0]);
+        iscp = await copy(arg);
+        if (iscp) await del(arg[0]);
         break;
       case 'rm':
         await del(arg[0]);

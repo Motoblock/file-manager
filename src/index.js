@@ -1,6 +1,5 @@
 
 import readline from 'node:readline';
-// import { chdir  } from 'node:process';
 
 import { welcom, goodbye, currentDir } from './util.js';
 import { list } from './view.js';
@@ -9,7 +8,7 @@ import { read, create, rename, copy, del } from './files.js';
 import { os } from './os.js';
 import { hashFile } from './hash.js';
 import { compressFile, decompressFile } from './zip.js';
-// chdir(homedir());
+chdir(homedir());
 
 welcom();
 
@@ -35,7 +34,6 @@ const init = async () => {
         break;
       case 'cd':
         nwd(arg);
-        // currentDir();
         break;
       case 'ls':
         list();

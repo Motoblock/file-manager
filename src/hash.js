@@ -18,11 +18,4 @@ export const hashFile = async (arrayFileName) => {
       }
     });
   }
-  //   try {
-  //     const data = await fs.readFile(path, 'utf-8');
-  //     const hash = createHash('sha256').update(data).digest('hex');
-  //     console.log(hash);
-  //   } catch {
-  //     console.error("Operation failed");
-    // }
 };

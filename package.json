@@ -1,0 +1,14 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "The task is to implement File Manager using Node.js APIs",
+  "author": "Motoblock",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Motoblock/file-manager.git"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  }
+}
